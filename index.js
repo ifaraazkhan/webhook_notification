@@ -31,7 +31,7 @@ app.post('/webhook', (req, res) => {
    console.log(req.body);
   // Extract the order details from the request body
   const { order } = req.body;
-console.log(order);
+console.log(order.line_items);
 let customer_fullname = order.customer.full_name;
 let order_number = order.id;
 let order_status_link = order.order_status_url.order_status_url;
@@ -63,7 +63,8 @@ let customer_email = order.email;
     name: customer_fullname,
     track_order_link:order_status_link,
     order_number: order_number,
-    order_subtotal: item_price,
+    address: shipmentAddress,
+    mobile:mobile,
     order_total : total_price,
     payment_mode : payment_method
   }

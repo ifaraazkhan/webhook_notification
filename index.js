@@ -40,6 +40,7 @@ let mobile = order.shipping_address.phone;
 let item_price = order.total_line_items_price;
 let total_price = order.current_total_price;
 let payment_method = order.gateway;
+let customer_email = order.email;
 
 
   // Send an email notification to the customer
@@ -55,8 +56,8 @@ let payment_method = order.gateway;
   transporter.use('compile', hbs(handlebarOptions));
   const mailOptions = {
     from: `${process.env.EMAIL_USER}`,
-    to: email,
-    subject: 'Your Order Details',
+    to: customer_email,
+    subject: 'Order Confirmation Details',
     template: 'email',
   context: {
     name: customer_fullname,

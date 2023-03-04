@@ -28,10 +28,10 @@ const handlebarOptions = {
 
 
 app.post('/webhook', (req, res) => {
-   console.log(req.body);
+  // console.log(req.body);
   // Extract the order details from the request body
   const { order } = req.body;
-console.log(order.line_items);
+//console.log(order.line_items);
 let customer_fullname = order.customer.full_name;
 let order_number = order.id;
 let order_status_link = order.order_status_url.order_status_url;
@@ -43,6 +43,8 @@ let payment_method = order.gateway;
 let customer_email = order.email;
 
 
+if(customer_email != "" || customer_email != null){
+
   // Send an email notification to the customer
   const transporter = nodemailer.createTransport({
     host: 'smtp.zoho.in',
@@ -53,6 +55,8 @@ let customer_email = order.email;
       pass: `${process.env.EMAIL_PASS}`
     }
   });
+
+
   transporter.use('compile', hbs(handlebarOptions));
   const mailOptions = {
     from: `${process.env.EMAIL_USER}`,
@@ -74,7 +78,7 @@ let customer_email = order.email;
     if (err) {
       console.error(err);
     } else {
-      console.log(`Email sent: ${info.response}`);
+      console.log(`Email sent: ${customer_email}`);
     }
   });
 
@@ -82,6 +86,10 @@ let customer_email = order.email;
   // Replace this with your own code to send WhatsApp messages
 
   res.status(200).send('Webhook received successfully.');
+}
+else{
+  res.status(200).send('Customer Email not found');
+}
 });
 
 app.get('/health',cors(), (req, res) => {
